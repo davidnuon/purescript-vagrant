@@ -5,6 +5,7 @@ end
 package "ghc"
 package "cabal-install"
 package "libncurses5-dev"
+package "nodejs"
 
 execute "Update cabal" do
     command "cabal update"
