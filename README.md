@@ -4,12 +4,9 @@ purescript-vagrant
 Instructions:
 
 - Clone this repository
+- `vagrant plugin install vagrant-berkshelf --plugin-version 2.0.1`
 - `vagrant up`
 - `vagrant ssh`
-- Inside the VM:
-    - `sudo su --`
-    - `source ~/.bash_profile`
-    - `psci`
 
 TODO
 ----
