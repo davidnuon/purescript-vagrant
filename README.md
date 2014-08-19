@@ -28,7 +28,7 @@ applications running under [Node.js](http://nodejs.org/), or just about anywhere
 For more information about PureScript, please visit the community
 [homepage](http://www.purescript.org/).
 
-### What Is VitualBox?
+### What Is VirtualBox?
 
 [VirtualBox](https://www.virtualbox.org/) is free open source virtual machine software
 developed and maintained by Oracle. It allows users to run "virtual" computers within
