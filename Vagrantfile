@@ -1,30 +1,35 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
-Vagrant.configure "2" do |config|
+require 'vagrant/util/platform'
 
-  config.berkshelf.enabled = true
+# Vagrantfile API/syntax version.
+VAGRANTFILE_API_VERSION = '2'
 
-  config.ssh.forward_agent = true
+# Load files in the support directory
+Dir.glob('support/**/*.rb').each {|file| load file }
 
-  config.vm.box = "precise64"
-  config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+# Vagrant configuration
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
-  config.vm.provider :virtualbox do |v|
-    v.customize [
-      "modifyvm", :id,
-      "--name",   "PureScript",
-      "--memory", "1024",
-      "--cpus", `grep "^processor" /proc/cpuinfo | wc -l`.chomp,
-      "--ioapic", "on"
-    ]
+  config.ssh.forward_agent = true unless Vagrant::Util::Platform.windows?
+
+  config.vm.define 'purescript', primary: true do |cfg|
+
+    cfg.vm.box = 'ubuntu/trusty64'
+
+    cfg.vm.provision :shell, :path => 'scripts/common.sh'
+    cfg.vm.provision :shell, :path => 'scripts/haskell.sh'
+    cfg.vm.provision :shell, :path => 'scripts/javascript.sh'
+    cfg.vm.provision :shell, :path => 'scripts/purescript.sh'
+
+    cfg.vm.provider 'virtualbox' do |v|
+      v.name = 'PureScript'
+      v.memory = 2094
+      v.cpus = 2
+    end
+
+    # from support
+    copy_ssh_keys(cfg)
   end
-
-  config.vm.provision :chef_solo do |chef|
-    chef.verbose_logging = true
-    chef.cookbooks_path = "cookbooks"
-    chef.add_recipe "purescript"
-  end
-
-  config.vm.provision :shell, path: "cabal.sh", privileged: false
 end
