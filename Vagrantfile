@@ -14,12 +14,13 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 
   config.ssh.forward_agent = true unless Vagrant::Util::Platform.windows?
 
+  config.vm.network "forwarded_port", guest: 80, host: 8080
+
   config.vm.define 'purescript', primary: true do |cfg|
 
     cfg.vm.box = 'ubuntu/trusty64'
 
     cfg.vm.provision :shell, :path => 'scripts/common.sh'
-    cfg.vm.provision :shell, :path => 'scripts/haskell.sh'
     cfg.vm.provision :shell, :path => 'scripts/javascript.sh'
     cfg.vm.provision :shell, :path => 'scripts/purescript.sh'
 
